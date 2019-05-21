@@ -3,7 +3,7 @@
 A shader to render 2D HTML and CSS to a texture for [A-Frame](https://aframe.io). This is an update using html2canvas v1.0rc which will render svg.
 Important note:
 - svg must have size (in css)
-- must add data-html2canvas-ignore="true" into <a-scence> (look at example below)
+- must add data-html2canvas-ignore="true" into <<a-scence>> (look at example below)
   
 ![ScreenShot](https://github.com/Zipexpo/aframe-html-shader/blob/master/examples/demo.PNG)
 
