@@ -5,7 +5,9 @@
  */
 
 
-import html2canvas from './lib/html2canvas/core'
+import $ from './lib/jquery'
+import html2canvas from './lib/html2canvas_new/index'
+// import html2canvas from './lib/html2canvas/core'
 
 if (typeof AFRAME === 'undefined') {
   throw 'Component attempted to register before AFRAME was available.'
@@ -89,7 +91,7 @@ AFRAME.registerShader('html', {
 
     const now = Date.now()
     if (now > this.__nextTime) {
-      this.__render()
+        this.__render()
     }
 
   },
@@ -191,7 +193,7 @@ AFRAME.registerShader('html', {
         /* render only once */
         this.__fps = this.schema.fps.default
         if (this.__target) {
-          this.__render()
+            this.__render()
         }
         /* set attribute */
         const material = Object.assign({}, this.el.getAttribute('material'))
@@ -202,7 +204,7 @@ AFRAME.registerShader('html', {
         this.__fps = fps
         if (this.__target) {
           this.play()
-          this.__render()
+            this.__render()
         }
       }
     }
@@ -346,11 +348,14 @@ AFRAME.registerShader('html', {
    * @private
    */
   __draw (canvas) {
+    console.log(this)
     log('__draw')
     if (!this.__ctx || !this.__texture) { return }
     const ratio = canvas.width / canvas.height
-    const cnvW = this.__cnv.width = THREE.Math.nearestPowerOfTwo(canvas.width)
-    const cnvH = this.__cnv.height = THREE.Math.nearestPowerOfTwo(canvas.height)
+      // const cnvW = this.__cnv.width = THREE.Math.nearestPowerOfTwo(canvas.width)
+      // const cnvH = this.__cnv.height = THREE.Math.nearestPowerOfTwo(canvas.height)
+      const cnvW = this.__cnv.width = THREE.Math.floorPowerOfTwo(canvas.width)
+      const cnvH = this.__cnv.height = THREE.Math.floorPowerOfTwo(canvas.height)
     this.__ctx.drawImage(canvas, 0, 0, cnvW, cnvH)
     this.__texture.needsUpdate = true
     if (this.__ratio) {
@@ -381,12 +386,23 @@ AFRAME.registerShader('html', {
     this.__nextTime = null
     if (!this.__targetEl) { return }
     const { width, height } = this.__targetEl.getBoundingClientRect()
-    html2canvas(this.__targetEl, {
-      background: undefined,
-      width: this.__width || width,
-      height: this.__height || height,
-      onrendered: this.__draw.bind(this)
-    })
+    function rr (a) {
+        setTimeout(() => {
+        html2canvas($(a.__target)[0], {
+            backgroundColor: null,
+            width: a.__width || width,
+            height: a.__height || height,
+            // onrendered: this.__draw.bind(this)
+        }).then(function (canvas) {
+            a.__draw.bind(a)(canvas);
+        });},1000);
+    }
+    return rr(this)
+    //     .then(function(canvas){
+    //       console.log('I am here!');
+    //       console.log(canvas);
+    //
+    //       return this.__draw.bind(this)(canvas);})
   },
 
   /**
