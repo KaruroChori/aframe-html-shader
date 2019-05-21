@@ -5,7 +5,7 @@ Important note:
 - svg must have size (in css)
 - must add data-html2canvas-ignore="true" into <a-scence> (look at example below)
   
-![ScreenShot](https://github.com/Zipexpo/aframe-html-shader/blob/master/examples/demo.png)
+![ScreenShot](https://github.com/Zipexpo/aframe-html-shader/blob/master/examples/demo.PNG)
 
 All information go to [mayognaise github](https://github.com/mayognaise/aframe-html-shader)
 
